@@ -1,0 +1,86 @@
+﻿@model IEnumerable<educ_system.Models.Type>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>All course types</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+@*
+<div>
+    <h3>Оберіть exel-файл для заватаження</h3>
+    @using (Html.BeginForm("Import", "Types", FormMethod.Post, new { enctype = "multipart/form-data", id = "frm-excel" }))
+    {
+        <div>
+            Завантажте Excel-файл:
+            <input type="file" name="fileExcel" id="fileExcel" />
+            <div>
+                <input type="submit" value="Завантажити" />
+            </div>
+        </div>
+    }
+</div>*@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Info)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                @if (Model.Select(obj => obj.Info) != null)
+                {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Info)
+                </td>
+                }
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="container">
+    <div id="chart1"></div>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script>
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            $.get('/api/Charts/JsonDataTypes', function (jsonData) {
+                data = google.visualization.arrayToDataTable(jsonData, false);
+                var option = {
+                    title: "Proportion between amount of courses and types",
+                    width: 500,
+                    height: 400
+                };
+                chart = new google.visualization.PieChart(document.getElementById('chart1'));
+                chart.draw(data, option);
+            })
+        }
+    </script>
+}

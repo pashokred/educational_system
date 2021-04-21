@@ -1,0 +1,76 @@
+﻿@model IEnumerable<educ_system.Models.Course>
+
+@{
+    ViewData["Title"] =  ViewBag.TypeName + " courses";
+}
+
+<h1>Courses with type @ViewBag.TypeName</h1>
+
+@if (ViewBag.TypeInfo != null)
+{
+    <h5>@ViewBag.TypeName - @ViewBag.TypeInfo</h5>
+}
+
+<p>
+    @Html.ActionLink("Add new course", "Create", new { typeId = @ViewBag.TypeId })
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Info)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Teacher)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Teacher.Subject)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Info)
+            </td>
+            <td>
+                <a asp-action="Teacher" asp-route-id="@item.TeacherId">@Html.DisplayFor(modelItem => item.Teacher.Name)</a>
+            </td>
+            <td>
+                <a asp-action="Subject" asp-route-id="@item.TeacherId">@Html.DisplayFor(modelItem => item.Teacher.Subject.Name)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+<div>
+    <a asp-action="Types">Back to Courses' Types</a>
+</div>
