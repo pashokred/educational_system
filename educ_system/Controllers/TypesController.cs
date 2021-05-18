@@ -150,93 +150,125 @@ namespace educ_system.Controllers
             return _context.Types.Any(e => e.Id == id);
         }
         
-        /*[HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Import(IFormFile fileExcel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return RedirectToAction(nameof(Index));
+            if (fileExcel != null)
             {
-                if (fileExcel != null)
+                await using var stream = new FileStream(fileExcel.FileName, FileMode.Create);
+                await fileExcel.CopyToAsync(stream);
+                using XLWorkbook workbook = new XLWorkbook(stream, XLEventTracking.Disabled);
+                
+                // check all worksheets (in current case types)
+                foreach (IXLWorksheet worksheet in workbook.Worksheets)
                 {
-                    using (var stream = new FileStream(fileExcel.FileName, FileMode.Create))
+                    // worksheet.Name - type name. Try to find in DB, if not exist - create new one
+                    Type newType;
+                    var t = _context.Types.Where(typ => typ.Name.Contains(worksheet.Name)).ToList();
+                    
+                    if (t.Count > 0)
+                        newType = t.First();
+                    else
                     {
-                        await fileExcel.CopyToAsync(stream);
-                        using (XLWorkbook workBook = new XLWorkbook(stream, XLEventTracking.Disabled))
+                        newType = new Type { Name = worksheet.Name, Info = "from EXCEL" };
+                        // add to context
+                        _context.Types.Add(newType);
+                    }
+                    // check all rows                    
+                    foreach (IXLRow row in worksheet.RowsUsed().Skip(1))
+                    {
+                        try
                         {
-                            //перегляд усіх листів (в даному випадку категорій)
-                            foreach (IXLWorksheet worksheet in workBook.Worksheets)
+                            var course = new Course
                             {
-                                //worksheet.Name - назва категорії. Пробуємо знайти в БД, якщо відсутня, то створюємо нову
-                                Type newType;
-                                var c = (from typ in _context.Types
-                                         where typ.Name.Contains(worksheet.Name)
-                                         select typ).ToList();
-                                if (c.Count > 0)
-                                {
-                                    newType = c[0];
-                                }
-                                else
-                                {
-                                    newType = new Type();
-                                    newType.Name = worksheet.Name;
-                                    newType.Info = "from EXCEL";
-                                    //додати в контекст
-                                    _context.Types.Add(newType);
-                                }
-                                //перегляд усіх рядків                    
-                                foreach (IXLRow row in worksheet.RowsUsed().Skip(1))
-                                {
-                                    try
-                                    {
-                                        Course course = new Course();
-                                        course.Name = row.Cell(1).Value.ToString();
-                                        course.Info = row.Cell(6).Value.ToString();
-                                        course.Type = newType;
-                                        _context.Courses.Add(course);
-                                        //у разі наявності автора знайти його, у разі відсутності - додати
-                                        for (int i = 2; i <= 5; i++)
-                                        {
-                                            if (row.Cell(i).Value.ToString().Length > 0)
-                                            {
-                                                Student teacher;
-
-                                                var a = (from teach in _context.Teachers
-                                                         where teach.Name.Contains(row.Cell(i).Value.ToString())
-                                                         select teach).ToList();
-                                                if (a.Count > 0)
-                                                {
-                                                    teacher = a[0];
-                                                }
-                                                else
-                                                {
-                                                    teacher = new Teacher();
-                                                    teacher.Name = row.Cell(i).Value.ToString();
-                                                    teacher.Info = "from EXCEL";
-                                                    //додати в контекст
-                                                    _context.Add(teacher);
-                                                }
-                                                TeachersCourse ab = new AuthorsBooks();
-                                                ab.Book = book;
-                                                ab.Author = teacher;
-                                                _context.AuthorsBooks.Add(ab);
-                                            }
-                                        }
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        //logging самостійно :)
-
-                                    }
-                                }
+                                Price = Convert.ToDecimal(row.Cell(1).Value),
+                                Name = row.Cell(2).Value.ToString(),
+                                Info = row.Cell(3).Value.ToString(),
+                                Type = newType,
+                            };
+                            
+                            var teacherName = row.Cell(4).Value.ToString();
+                            var subjectName = row.Cell(5).Value.ToString();
+                            if (teacherName?.Length <= 0 || subjectName?.Length <= 0) continue;
+                            Teacher teacher;
+                            Subject subject;
+                            
+                            // Find subject in case exists, else - add
+                            var subjectsWithName = _context.Subjects.Where(sbj => sbj.Name.Contains(subjectName));
+                            if (subjectsWithName.Any())
+                                subject = subjectsWithName.First();
+                            else
+                            {
+                                subject = new Subject { Name = subjectName };
+                                _context.Add(subject);
                             }
+                            
+                            // Find teacher in case exists, else - add
+                            var teachersWithName = _context.Teachers.Where(tr => tr.Name.Contains(teacherName) 
+                                                                  && tr.Subject.Name.Contains(subject.Name)).ToList();
+                            if (teachersWithName.Count > 0)
+                                teacher = teachersWithName.First();
+                            else
+                            {
+                                teacher = new Teacher { Name = teacherName, Info = "from EXCEL", Subject = subject};
+                                _context.Add(teacher);
+                            }
+
+                            course.Teacher = teacher;
+                            _context.Courses.Add(course);
+                        }
+                        catch (Exception)
+                        {
+                            // logging
                         }
                     }
                 }
-
-                await _context.SaveChangesAsync();
             }
-            return RedirectToAction(nameof(Index));
-        }*/
 
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public ActionResult Export()
+        {
+            using var workbook = new XLWorkbook(XLEventTracking.Disabled);
+            var types = _context.Types.Include(t => t.Courses);
+             //тут, для прикладу ми пишемо усі книжки з БД, в своїх проектах ТАК НЕ РОБИТИ (писати лише вибрані)
+             foreach (var t in types)
+             {
+                 var worksheet = workbook.Worksheets.Add(t.Name);
+
+                 worksheet.Cell("A1").Value = "Price";
+                 worksheet.Cell("B1").Value = "Name";
+                 worksheet.Cell("C1").Value = "Info";
+                 worksheet.Cell("D1").Value = "Teacher";
+                 worksheet.Cell("E1").Value = "Subject";
+                 worksheet.Row(1).Style.Font.Bold = true;
+                 var courses = _context.Courses.Where(c => c.Type == t).Include(c => c.Teacher)
+                     .Include(c => c.Teacher.Subject).ToList();
+
+                 //нумерація рядків/стовпчиків починається з індекса 1 (не 0)
+                 for (var i = 0; i < courses.Count; i++)
+                 {
+                     worksheet.Cell(i + 2, 1).Value = courses[i].Price;
+                     worksheet.Cell(i + 2, 2).Value = courses[i].Name;
+                     worksheet.Cell(i + 2, 3).Value = courses[i].Info;
+                     worksheet.Cell(i + 2, 4).Value = courses[i].Teacher.Name;
+                     worksheet.Cell(i + 2, 5).Value = courses[i].Teacher.Subject.Name;
+                 }
+             }
+
+             using var stream = new MemoryStream();
+             workbook.SaveAs(stream);
+             stream.Flush();
+
+             return new FileContentResult(stream.ToArray(),
+                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+             {
+                 FileDownloadName = $"online-school_{DateTime.UtcNow.ToLongDateString()}.xlsx"
+             };
+        }
     }
 }

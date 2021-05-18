@@ -16,7 +16,6 @@ namespace educ_system.Models
         [Required(ErrorMessage = "The field must not be empty")]
         [RegularExpression(@"^[A-Z]+[a-zA-Z]*$", ErrorMessage = "The field must be alphabet only, first letter upcast")]
         public string Name { get; set; }
-
         public virtual ICollection<Teacher> Teachers { get; set; }
     }
 }
