@@ -1,0 +1,281 @@
+﻿@model Query
+
+@{
+    ViewData["Title"] = "Запити";
+}
+
+<h1>Queries</h1>
+<hr />
+
+<h3>Simple</h3>
+<hr />
+
+<p style="font-size:20px">
+    <b>Запит 1</b>
+</p>
+<p style="font-size:17px">
+    Знайти усіх учнів на курсі Х, які також навчаються на курсах з типом Y
+</p>
+<div class="row">
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="SimpleQuery1">
+            <div class="form-group">
+                <label class="control-label">Назва курсу Х</label>
+                <select id="q4" asp-for="CourseName" asp-items="@ViewBag.CourseNames" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Назва типу Y</label>
+                <select asp-for="TypeName" asp-items="@ViewBag.TypeNames" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Надіслати" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+
+<p style="font-size:20px">
+    <b>Запит 2</b>
+</p>
+<p style="font-size:17px">
+    Знайти імена учнів, що навчаються хоча б на одному курсі типу Х.
+</p>
+<div class="row">
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="SimpleQuery2">
+            <div class="form-group">
+                <label class="control-label">Назва типу Х</label>
+                <select asp-for="TypeName" asp-items="@ViewBag.TypeNames" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Надіслати" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+
+<p style="font-size:20px">
+    <b>Запит 3</b>
+</p>
+<p style="font-size:17px">
+    Знайти назви та ціни всіх курсів предмету Х.
+</p>
+<div class="row">
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="SimpleQuery3">
+            <div class="form-group">
+                <label class="control-label">Назва предмету Х</label>
+                <select asp-for="SubjectName" asp-items="@ViewBag.SubjectNames" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Надіслати" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+
+<p style="font-size:20px">
+    <b>Запит 4</b>
+</p>
+<p style="font-size:17px">
+    Знайти імена усіх викладачів, які викладають на тих курсах, на яких навчається учень з ім'ям Х.
+</p>
+<div class="row">
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="SimpleQuery4">
+            <div class="form-group">
+                <label class="control-label">Учень з ім'ям Х</label>
+                <select id="q4" asp-for="StudentName" asp-items="@ViewBag.StudentNames" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Надіслати" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+
+<p style="font-size:20px">
+    <b id="q5">Запит 5</b>
+</p>
+<p style="font-size:17px">
+    Знайти імена викладачів, які викладають на курсах з ціною не Х
+</p>
+<div class="row">
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="SimpleQuery5">
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input maxlength="28" id="price" asp-for="Price" class="form-control"/>
+                <span class="text-danger">@ViewBag.PriceError</span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Надіслати" class="btn btn-success" onclick="submit5()"/>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+
+<p style="font-size:20px">
+    <b>Запит 6</b>
+</p>
+<p style="font-size:17px">
+    Знайти імена імена студентів, які не вивчають предмет з назвою Х.
+</p>
+<div class="row">
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="SimpleQuery6">
+            <div class="form-group">
+                <label class="control-label">Назва предмету Х</label>
+                <select asp-for="SubjectName" asp-items="@ViewBag.SubjectNames" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Надіслати" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+
+<h3>Advanced</h3>
+<hr />
+
+<p style="font-size:20px">
+    <b>Запит 1</b>
+</p>
+<p style="font-size:17px">
+    Знайти назви предметів, викладачі з яких викладають курси принаймні за всіма тими цінами, що й викладач із id Х.
+</p>
+<div class="row">
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="AdvancedQuery1">
+            <div class="form-group">
+                <label class="control-label">ID викладача Х</label>
+                <select asp-for="TeacherId" asp-items="@ViewBag.TeacherIds" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Надіслати" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+
+<p style="font-size:20px">
+    <b>Запит 2</b>
+</p>
+<p style="font-size:17px">
+    Знайти імена учнів, які придбали точно ті ж самі курси, що й учень з іменем Х.
+</p>
+<div class="row">
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="AdvancedQuery2">
+            <div class="form-group">
+                <label class="control-label">Ім'я учня Х</label>
+                <select asp-for="StudentName" asp-items="@ViewBag.StudentNames" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Надіслати" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+
+<p style="font-size:20px">
+    <b>Запит 3</b>
+</p>
+<p style="font-size:17px">
+    Знайти id учнів з іменем Х, які придбали всі наявні курси.
+</p>
+<div class="row">
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="AdvancedQuery3">
+            <div class="form-group">
+                <label class="control-label">Ім'я учня</label>
+                <select asp-for="StudentName" asp-items="@ViewBag.StudentNames" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Надіслати" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+
+<div class="container">
+    <h3>Запити від викладача</h3>
+    <hr />
+
+    <p style="font-size:20px;">
+        <b>Запит 1</b>
+    </p>
+    <p style="font-size:17px">
+        Знайти предмети, які читають усі викладачі
+    </p>
+    <div class="row">
+        <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <form asp-action="TeacherQuery1">
+                <div class="form-group">
+                    <input type="submit" value="Надіслати" class="btn btn-success" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr />
+
+    <p style="font-size:20px;">
+        <b>Запит 2</b>
+    </p>
+    <p style="font-size:17px">
+        Знайти викладачів, які читають предмети для більш ніж Х студентів
+    </p>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="TeacherQuery2">
+                <div class="form-group">
+                    <label asp-for="Cnt" class="control-label"></label>
+                    <input maxlength="28" id="price" asp-for="Cnt" class="form-control"/>
+                    <span class="text-danger">@ViewBag.PriceError</span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Надіслати" class="btn btn-success" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr />
+</div>
+
+
+<form method="get" asp-controller="Home" asp-action="Index">
+    <input type="submit" class="btn btn-primary" value="На головну" />
+</form>
+
+@section scripts
+{
+    <script>
+        window.addEventListener("load", function () {
+            if ('@ViewBag.ErrorFlag' == 1) {
+                document.getElementById("q4").scrollIntoView();
+            }
+            else if ('@ViewBag.ErrorFlag' == 2) {
+                document.getElementById("q5").scrollIntoView();
+            }
+        });
+    </script>
+}

@@ -1,0 +1,351 @@
+﻿@model Query
+
+@{
+    ViewData["Title"] = "Результат";
+}
+
+<h1>Результат</h1>
+<hr />
+
+@if (Model.ErrorFlag != 1)
+{
+    @if (Model.QueryId.Equals("S1"))
+    {
+        <p style="font-size:20px">
+            <b>учнів на курсі @Model.CourseName, які також навчаються на курсах з типом @Model.TypeName</b>
+                </p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Ім'я
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.StudentNames.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    @Model.StudentNames[i]
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+    }
+    else if (Model.QueryId.Equals("S2"))
+    {
+        <p style="font-size:20px">
+            <b>учнів, що навчаються хоча б на одному курсі типу @Model.TypeName</b>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Ім'я
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.StudentNames.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.StudentNames[i]
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (Model.QueryId.Equals("S3"))
+    {
+        <p style="font-size:20px">
+            <b>назви та ціни всіх курсів предмету @Model.CourseName</b>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Назва
+                    </th>
+                    <th>
+                        Ціна
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.CourseNames.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.CourseNames[i]
+                        </td>
+                        <td>
+                            @decimal.Round(Model.Prices[i], 2, MidpointRounding.AwayFromZero)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (Model.QueryId.Equals("S4"))
+    {
+        <p style="font-size:20px">
+            <b>імена усіх викладачів, які викладають на тих курсах, на яких навчається учень з ім'ям @Model.StudentName</b>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Ім'я
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.TeacherNames.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.TeacherNames[i]
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (Model.QueryId.Equals("S5"))
+    {
+        <p style="font-size:20px">
+            <b>імена викладачів, які викладають на курсах з ціною не @Model.Price</b>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Ім'я
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.TeacherNames.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.TeacherNames[i]
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (Model.QueryId.Equals("S6"))
+    {
+        <p style="font-size:20px">
+            <b>імена студентів, які не вивчають предмет з назвою @Model.SubjectName</b>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Ім'я
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.StudentNames.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.StudentNames[i]
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (Model.QueryId.Equals("A1"))
+    {
+        <p style="font-size:20px">
+            <b>назви предметів, викладачі з яких викладають курси принаймні за всіма тими цінами, що й викладач із id @Model.TeacherId</b>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Назва
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.SubjectNames.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.SubjectNames[i]
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (Model.QueryId.Equals("A2"))
+    {
+        <p style="font-size:20px">
+            <b>імена учнів, які придбали точно ті ж самі курси, що й учень з іменем @Model.StudentName</b>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Ім'я
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.StudentNames.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.StudentNames[i]
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (Model.QueryId.Equals("A3"))
+    {
+        <p style="font-size:20px">
+            <b>id учнів з іменем @Model.StudentName, які придбали всі наявні курси</b>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Прізвище
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.StudentIds.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.StudentIds[i]
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (Model.QueryId.Equals("T1"))
+    {
+        <p style="font-size:20px">
+            <b>предмети, які читають усі викладачі</b>
+        </p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    Предмет
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (int i = 0; i < Model.SubjectNames.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Model.SubjectNames[i]
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    else if (Model.QueryId.Equals("T2"))
+    {
+        <p style="font-size:20px">
+            <b>викладачі, які читають предмети для більш ніж @Model.Cnt студентів</b>
+        </p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    Викладач
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (int i = 0; i < Model.TeacherNames.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Model.TeacherNames[i]
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+}
+else
+{
+    <p style="font-size:20px">
+        Порожній результат.
+        <br/>
+        Спробуйте ще раз з іншим параметром.
+    </p>
+}
+
+
+<table>
+    <tr>
+        <td>
+            <form method="get" asp-controller="Queries" asp-action="Index">
+                <input type="submit" class="btn btn-primary" value="Назад до запитів" />
+            </form>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            <form method="get" asp-controller="Home" asp-action="Index">
+                <input type="submit" class="btn btn-primary" value="На головну" />
+            </form>
+        </td>
+    </tr>
+</table>
+
+
+<div class="modal fade" id="error" tabindex="-1" role="alertdialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Повідомлення</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="errorText">
+                @Model.Error
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">ОК</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        window.addEventListener("load", function () {
+            if ('@Model.ErrorFlag' == 1) {
+                $("#error").modal();
+            }
+        });
+    </script>
+}

@@ -183,3 +183,5 @@ D:\Development\C#\educ_system\educ_system\bin\Debug\net5.0\ClosedXML.dll
 D:\Development\C#\educ_system\educ_system\bin\Debug\net5.0\DocumentFormat.OpenXml.dll
 D:\Development\C#\educ_system\educ_system\bin\Debug\net5.0\ExcelNumberFormat.dll
 D:\Development\C#\educ_system\educ_system\bin\Debug\net5.0\System.IO.Packaging.dll
+D:\Development\C#\educ_system\educ_system\obj\Debug\net5.0\Razor\Views\Queries\Index.cshtml.g.cs
+D:\Development\C#\educ_system\educ_system\obj\Debug\net5.0\Razor\Views\Queries\Result.cshtml.g.cs
