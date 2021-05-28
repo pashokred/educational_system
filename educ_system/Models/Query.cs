@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Serialization;
 
 namespace educ_system.Models
 {
@@ -16,13 +12,10 @@ namespace educ_system.Models
         public int ErrorFlag { get; set; }
         
         public List<string> CourseNames { get; set; }
-        public List<string> TypeNames { get; set; }
         public List<string> SubjectNames { get; set; }
         public List<string> TeacherNames { get; set; }
         public List<string> StudentNames { get; set; }
         public List<int> StudentIds { get; set; }
-        public List<int> TeacherIds { get; set; }
-        public List<int> Cnts { get; set; }
         public List<decimal> Prices { get; set; }
         
         [Required(ErrorMessage = "Поле необхідно заповнити")]
@@ -30,8 +23,6 @@ namespace educ_system.Models
         public string TypeName { get; set; }
         public string SubjectName { get; set; }
         public string StudentName { get; set; }
-        public int StudentId { get; set; }
-        public string TeacherName { get; set; }
         [Display(Name = "Кількість учнів X")]
         public int Cnt { get; set; }
         public int TeacherId { get; set; }

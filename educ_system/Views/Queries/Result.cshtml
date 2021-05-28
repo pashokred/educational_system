@@ -23,14 +23,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for (int i = 0; i < Model.StudentNames.Count; i++)
-                        {
-                            <tr>
-                                <td>
-                                    @Model.StudentNames[i]
-                                </td>
-                            </tr>
-                        }
+                    @foreach (var studentName in Model.StudentNames)
+                    {
+                        <tr>
+                            <td>
+                                @studentName
+                            </td>
+                        </tr>
+                    }
                     </tbody>
                 </table>
     }
@@ -48,14 +48,14 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < Model.StudentNames.Count; i++)
-                {
-                    <tr>
-                        <td>
-                            @Model.StudentNames[i]
-                        </td>
-                    </tr>
-                }
+            @foreach (var studentName in Model.StudentNames)
+            {
+                <tr>
+                    <td>
+                        @studentName
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     }
@@ -76,7 +76,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < Model.CourseNames.Count; i++)
+                @for (var i = 0; i < Model.CourseNames.Count; i++)
                 {
                     <tr>
                         <td>
@@ -104,14 +104,14 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < Model.TeacherNames.Count; i++)
-                {
-                    <tr>
-                        <td>
-                            @Model.TeacherNames[i]
-                        </td>
-                    </tr>
-                }
+            @foreach (var teacherName in Model.TeacherNames)
+            {
+                <tr>
+                    <td>
+                        @teacherName
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     }
@@ -129,14 +129,14 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < Model.TeacherNames.Count; i++)
-                {
-                    <tr>
-                        <td>
-                            @Model.TeacherNames[i]
-                        </td>
-                    </tr>
-                }
+            @foreach (var teacherName in Model.TeacherNames)
+            {
+                <tr>
+                    <td>
+                        @teacherName
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     }
@@ -154,14 +154,14 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < Model.StudentNames.Count; i++)
-                {
-                    <tr>
-                        <td>
-                            @Model.StudentNames[i]
-                        </td>
-                    </tr>
-                }
+            @foreach (var studentName in Model.StudentNames)
+            {
+                <tr>
+                    <td>
+                        @studentName
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     }
@@ -179,14 +179,14 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < Model.SubjectNames.Count; i++)
-                {
-                    <tr>
-                        <td>
-                            @Model.SubjectNames[i]
-                        </td>
-                    </tr>
-                }
+            @foreach (var subjName in Model.SubjectNames)
+            {
+                <tr>
+                    <td>
+                        @subjName
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     }
@@ -204,14 +204,14 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < Model.StudentNames.Count; i++)
-                {
-                    <tr>
-                        <td>
-                            @Model.StudentNames[i]
-                        </td>
-                    </tr>
-                }
+            @foreach (var studentName in Model.StudentNames)
+            {
+                <tr>
+                    <td>
+                        @studentName
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     }
@@ -229,14 +229,14 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < Model.StudentIds.Count; i++)
-                {
-                    <tr>
-                        <td>
-                            @Model.StudentIds[i]
-                        </td>
-                    </tr>
-                }
+            @foreach (var studentId in Model.StudentIds)
+            {
+                <tr>
+                    <td>
+                        @studentId
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     }
@@ -254,11 +254,11 @@
             </tr>
             </thead>
             <tbody>
-            @for (int i = 0; i < Model.SubjectNames.Count; i++)
+            @foreach (var subjectName in Model.SubjectNames)
             {
                 <tr>
                     <td>
-                        @Model.SubjectNames[i]
+                        @subjectName
                     </td>
                 </tr>
             }
@@ -279,11 +279,11 @@
             </tr>
             </thead>
             <tbody>
-            @for (int i = 0; i < Model.TeacherNames.Count; i++)
+            @foreach (var teacherName in Model.TeacherNames)
             {
                 <tr>
                     <td>
-                        @Model.TeacherNames[i]
+                        @teacherName
                     </td>
                 </tr>
             }
@@ -343,7 +343,7 @@ else
 {
     <script>
         window.addEventListener("load", function () {
-            if ('@Model.ErrorFlag' == 1) {
+            if (@Model.ErrorFlag === 1) {
                 $("#error").modal();
             }
         });

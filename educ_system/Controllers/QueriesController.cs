@@ -1,24 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using DocumentFormat.OpenXml.Drawing;
 using educ_system.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using educ_system.Models;
 
 namespace educ_system.Controllers
 {
     public class QueriesController : Controller
     {
         private const string ConnStr = "Server=ADMIN-PASHOK;Database=DBOSchool;Trusted_Connection=True;MultipleActiveResultSets=true";
-        private static readonly string BaseDirQueries = @"D:\Development\C#\educ_system\educ_system\Queries\";
-
-
+        private const string BaseDirQueries = @"D:\Development\C#\educ_system\educ_system\Queries\";
+        
         private static readonly string S1Path = BaseDirQueries + "Simple1.sql";
         private static readonly string S2Path = BaseDirQueries + "Simple2.sql";
         private static readonly string S3Path = BaseDirQueries + "Simple3.sql";
@@ -31,12 +24,6 @@ namespace educ_system.Controllers
         private static readonly string T1Path = BaseDirQueries + "Teacher1.sql";
         private static readonly string T2Path = BaseDirQueries + "Teacher2.sql";
 
-        private const string ERR_AVG = "Неможливо обрахувати середню ціну, оскільки продукти відсутні.";
-        private const string ERR_CUST = "Покупці, що задовольняють дану умову, відсутні.";
-        private const string ERR_PROD = "Програмні продукти, що задовольняють дану умову, відсутні.";
-        private const string ERR_DEV = "Розробники, що задовольняють дану умову, відсутні.";
-        private const string ERR_COUNTRY = "Країни, що задовольняють дану умову, відсутні.";
-        
         private readonly DBOSchoolContext _context;
 
         public QueriesController(DBOSchoolContext context)

@@ -4,4 +4,4 @@ FROM Students
 		INNER JOIN Groups ON StudentGroups.GroupId = Groups.Id 
 		INNER JOIN Courses ON Courses.Id = Groups.CourseId 
 		INNER JOIN Types ON Courses.TypeId = Types.Id
-WHERE Types.Name = X;
+WHERE Types.Name = Õ;
